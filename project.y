@@ -38,4 +38,24 @@ Expr :  'Expr' 'Binop' 'Expr'
         |   '(' 'Expr' ')'
         | 'this'
         | 'Number' ;
+        
+        
+Exprlist : Expr {',' Expr}
 
+Number   : <INT> 
+          | <REAL> 
+          | "true" 
+          | "false" ;
+          
+Binop : '+'
+        | '-' 
+        | '*'
+        | '/'
+        | '&&'
+        | '||'
+        | '==' 
+        | '!='
+        | '<'
+        | '<='
+        | '>'
+        | '>=';
