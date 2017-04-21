@@ -81,6 +81,6 @@ exit(0);
 
 main()
 {
-printf("Enter the exp: ");
+printf("Enter the input ");
 yyparse();
 }
