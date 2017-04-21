@@ -14,21 +14,21 @@ str:S'\n' {return 0;}
 ;
  
 Program : class_dec{class_dec};  
-class_dec: "class"<ID>["extends"<ID>]'{' {var_dec} {method_dec} '}';
-var_dec : Type<ID>['=' Expr ] ';' ;
-method_dec : "public" Type<ID>'(' [FormalParams]')' '{' {var_dec} {statement} '}'
-             | "public" "static" "void" "main" '(' "String" '[' ']' <ID> ')' '{' {var_dec} {statement} '}' ;
+class_dec: CLASS ID [EXTENDS ID]'{' {var_dec} {method_dec} '}';
+var_dec : Type ID ['=' Expr ] ';' ;
+method_dec : PUBLIC Type ID'(' [FormalParams]')' '{' {var_dec} {statement} '}'
+             | PUBLIC STATIC VOID MAIN '(' STRING  '[' ']' <ID> ')' '{' {var_dec} {statement} '}' ;
 
 
 FormalParams : Formal{',' Formal} ;
 Formal : Type <ID> ;
 Type :  BasicType [ '[' ']' ] 
 	| <ID> 
-	| "void" ;
+	| VOID ;
 
-BasicType : "boolean"
-	    | "int" 
-	    | "double" ;
+BasicType : BOOLEAN
+	    | INT 
+	    | DOUBLEE ;
 
 
 Statement  : '{' {Statement} '}' 
