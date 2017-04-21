@@ -8,7 +8,7 @@ digit [0-9]
 
 %%
 class return CLASS ;
-extends return EXTANDS;
+extends return EXTENDS;
 public return PUBLIC;
 static return STATIC;
 void return VOID;
@@ -17,7 +17,7 @@ String return STRING;
 boolean return BOOLEAN; 
 int return INT ;
 double return DOUBLE;
-system.out.println return SYSTEM.OUT;
+system.out.println return SYSTEMOUT;
 length return LENGTH;
 new return NEW;
 this return THIS;
@@ -27,6 +27,7 @@ if return IF;
 then    return THEN;
 else    return ELSE;
 while return WHILE ;
+Return return RETURN ;
 
 {digit}+    return NUM;
 {alpha}({alpha}|{digit})*    return ID;
@@ -34,7 +35,7 @@ while return WHILE ;
 ' ' return SPACE ;
 [\t] ;
 \n return 0;
-\".*\" return statement;
+\".*\" return SENTENCE ;
 . return yytext[0];
 %%
 
