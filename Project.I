@@ -9,6 +9,7 @@ digit [0-9]
 %%
 class return CLASS ;
 if return IF;
+public return PUBLIC
 then    return THEN;
 else    return ELSE;
 while return WHILE ;
