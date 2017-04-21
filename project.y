@@ -1,5 +1,6 @@
 %{
 #include<stdio.h>
+#include "lex.yy.c"
 int valid=1;
 %}
 %token A B
@@ -71,7 +72,8 @@ Binop : '+'  {;}
         | '>'
         | '>=';
 
-#include "lex.yy.c"
+
+
 
 main()
 {
