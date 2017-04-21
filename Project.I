@@ -30,6 +30,7 @@ while return WHILE ;
 
 {digit}+    return NUM;
 {alpha}({alpha}|{digit})*    return ID;
+' ' return SPACE ;
 [\t] ;
 \n return 0;
 . return yytext[0];
