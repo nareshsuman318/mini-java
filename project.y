@@ -70,3 +70,11 @@ Binop : '+'  {;}
         | '<='
         | '>'
         | '>=';
+
+#include "lex.yy.c"
+
+main()
+{
+printf("Enter the exp: ");
+yyparse();
+}
