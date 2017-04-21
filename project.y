@@ -2,7 +2,7 @@
 #include<stdio.h>
 int valid=1;
 %}
-%token ID
+%token ID CLASS EXTENDS
 %left '+' '-'
 %left '*' '/'
 %left '(' ')'
@@ -12,26 +12,28 @@ int valid=1;
 str:S'\n' {return 0;}
 ;
  
-Program : class_dec{class_dec};  {printf("\n Accepted\n"); exit(0);}
-class_dec: CLASS" "ID '{' {var_dec} {method_dec} '}'           {;}
- 	| CLASS" "ID "extends"<ID>'{' {var_dec} {method_dec} '}'
+Program : class_dec   {printf("\n Accepted\n"); exit(0);} 
+	| class_dec Program 
+	;
+class_dec: CLASS SPACE ID '{' var_dec  method_dec  '}'           {;}
+ 	| CLASS SPACE ID SPACE EXTENDS SPACE ID '{' var_dec method_dec '}'  {;}
  	;
- var_dec : Type<ID> ';' 
- 	| Type<ID>'=' Expr ';' 
- 	|
+ var_dec : Type SPACE ID ';' 
+ 	| Type SPACE ID '=' Expr ';' 
+ 	| var_dec var_dec 
  	;    
- method_dec : "public" Type<ID>'('')' '{' {var_dec} {statement} '}'
- 	     | "public" Type<ID>'(' FormalParams')' '{' {var_dec} {statement} '}'
-              | "public" "static" "void" "main" '(' "String" '[' ']' <ID> ')' '{' {var_dec} {statement} '}' 
+ method_dec : PUBLIC SPACE  Type SPACE ID '(' ')' '{' var_dec statement '}'
+ 	     | PUBLIC SPACE  Type SPACE ID '(' FormalParams')' '{' var_dec statement '}'
+              | PUBLIC SPACE STATIC SPACE VOID SPACE MAIN '(' STRING '[' ']' ID ')' '{' var_dec statement '}' 
  	     ;
   
 
 FormalParams    : Formal             { $$ = dcl ($2, (char *) NULL, $1, 0, PARAM); }
         	| FormalParams ',' Formal    { $$ = dcl ($4, (char *) NULL, $3, 0, PARAM); }
         	;
-Formal : Type <ID> ;
+Formal : Type SPACE ID ;
 Type :  BasicType
-	|BasicType'[' ']' 
+	|BasicType'[' ']'  
 	| ID  ;         {}
 	| "void" ;     {}
 
@@ -40,25 +42,26 @@ BasicType : "boolean"
 	    | "double" ;
 
 
-Statement  : '{' {Statement} '}' 
-              | <ID> '=' Expr ';'
- 	     | <ID> '[' Expr ']'  '=' Expr ';'
+Statement  : '{' Statement '}' 
+             | ID '=' Expr ';'
+ 	     | ID '[' Expr ']'  '=' Expr ';'
 	     |Expr '.' <ID> '=' Expr ';'
 	     |Expr '.' <ID>  '[' Expr ']'  '=' Expr ';'
  	     
-              |   <ID> '('  ')' ';' 
- 	     |   <ID> '(' Explist ')' ';' 
- 	     | Expr '.'  <ID> '('  ')' ';' 
- 	     | Expr '.'  <ID> '(' Explist ')' ';' 
+             | ID '('  ')' ';' 
+ 	     |ID '(' Explist ')' ';' 
+ 	     | Expr '.' ID '('  ')' ';' 
+ 	     | Expr '.'  ID '(' Explist ')' ';' 
  	     
-             | IF '(' Expr ')' Statement ELSE Statement
+             | IF '(' Expr ')' Statement ELSE Statement   
 	     |IF '(' Expr ')' Statement
              | WHILE '(' Expr ')' Statement
-            | "system.out.println" '(' ')' ';'   {print("system.out.println()")}
- 	     |  "system.out.println" '(' Expr|<STRING>')' ';'
-              | Return  ';'
- 	     |Return Expr ';';
-
+             | SYSTEMOUT '(' ')' ';'   {print("\n");}
+ 	     | SYSTEMOUT '(' SENTENCE ')' ';'   {print("$2\n");}
+	     |SYSTEMOUT '(' Expr ')' ';'   {print("$2\n");}
+             |RETURN  ';'    
+ 	     |RETURN Expr ';'  {$$ = $2;}
+	     ;
 Expr :  Expr Binop Expr   {
 				if($2=='+') 
 				{
@@ -116,21 +119,22 @@ Expr :  Expr Binop Expr   {
 				   else {$$ = false}
 				}
 				;}
+				
 
-        | '!' Expr
-        | Expr '[' Expr']'
-        | Expr '.' "length"  '('  ')'
-        |  <ID> '('  ')'
- 	|   <ID> '('  Exprlist  ')'
- 	|  Expr '.'  <ID> '('  ')'
- 	|  Expr '.'  <ID> '('  Exprlist  ')'
-        |  <ID>
- 	|  Expr '.' <ID>
-        | "new"  BasicType '[' Expr  ']'
-        | "new" <ID>  '('  ')'
-        | '(' Expr ')'
-        | "this"
-        | Number ;
+        | '!' Expr             {$$ = !$1 ;}
+        | Expr '[' Expr']'	{;}
+        | Expr '.' "length"  '('  ')'	{;}
+        |  <ID> '('  ')'	{;}
+ 	|   <ID> '('  Exprlist  ')'	{;}
+ 	|  Expr '.'  <ID> '('  ')'	{;}
+ 	|  Expr '.'  <ID> '('  Exprlist  ')'	{;}
+        |  <ID>			{;}
+ 	|  Expr '.' <ID> 	{;}
+        | "new"  BasicType '[' Expr  ']'   {;}
+        | "new" <ID>  '('  ')'		{;}
+        | '(' Expr ')'		{;}
+        | "this"         {;}
+        | Number ;      {$$ = $1}
         
         
 Exprlist : Expr {',' Expr}
@@ -140,14 +144,14 @@ Number   : NUM
           | "false" ;
           
 Binop : '+'  {;}
-        | '-' 
-        | '*'
-        | '/'
-        | '&&'
-        | '||'
-        | '==' 
-        | '!='
-        | '<'
-        | '<='
-        | '>'
-        | '>=';
+        | '-'  {;}
+        | '*'  {;}
+        | '/'  {;}
+        | '&&'  {;}
+        | '||'  {;}
+        | '==' {;}
+        | '!=' {;}
+        | '<' {;}
+        | '<='  {;}
+        | '>'   {;}
+        | '>=';  {;}
