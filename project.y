@@ -10,9 +10,9 @@ int valid=1;
 %%
 %%
 
-str:S'\n' {return 0;}
+str:S'\n' {printf("Accepted"); exit(0);}
 ;
- 
+ S :Program;
 Program : class_dec{class_dec};  
 class_dec: CLASS ID [EXTENDS ID]'{' {var_dec} {method_dec} '}';
 var_dec : Type ID ['=' Expr ] ';' ;
