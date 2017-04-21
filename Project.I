@@ -32,7 +32,7 @@ Return return RETURN ;
 {digit}+    return NUM;
 {alpha}({alpha}|{digit})*    return ID;
 
-' ' return SPACE ;
+" " return SPACE ;
 [\t] ;
 \n return 0;
 \".*\" return SENTENCE ;
