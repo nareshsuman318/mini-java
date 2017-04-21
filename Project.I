@@ -7,9 +7,11 @@ extern int yylval;
 digit [0-9]
 
 %%
+class return CLASS ;
 if return IF;
 then    return THEN;
 else    return ELSE;
+while return WHILE ;
 {digit}+    return NUM;
 {alpha}({alpha}|{digit})*    return ID;
 [\t] ;
