@@ -3,12 +3,16 @@
 int valid=1;
 %}
 %token A B
+%left '+' '-'
+%left '*' '/'
+%left '(' ')'
+%%
 %%
 
 str:S'\n' {return 0;}
 ;
  
-Program : class_dec{class_dec};
+Program : class_dec{class_dec};  
 class_dec: "class"<ID>["extends"<ID>]'{' {var_dec} {method_dec} '}';
 var_dec : Type<ID>['=' Expr ] ';' ;
 method_dec : "public" Type<ID>'(' [FormalParams]')' '{' {var_dec} {statement} '}'
@@ -34,7 +38,7 @@ Statement  : '{' {Statement} '}'
              | "system.out.println" '(' [Expr|<STRING>]')' ';'
              | Return [Expr] ';' ;
 
-Expr :  Expr Binop Expr
+Expr :  Expr Binop Expr      
         | '!' Expr
         | Expr '[' Expr']'
         | Expr '.' "length"  '('  ')'
@@ -54,7 +58,7 @@ Number   : <INT>
           | "true" 
           | "false" ;
           
-Binop : '+'
+Binop : '+'  {;}
         | '-' 
         | '*'
         | '/'
