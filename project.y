@@ -74,6 +74,10 @@ Binop : '+'  {;}
 
 
 
+int yyerror(char *msg){
+printf("error has occured");
+exit(0);
+}
 
 main()
 {
