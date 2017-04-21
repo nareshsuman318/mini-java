@@ -34,9 +34,9 @@ BasicType : BOOLEAN
 Statement  : '{' {Statement} '}' 
              | [Expr '.'] <ID> [ '[' Expr ']' ] '=' Expr ';'
              | [Expr '.']  <ID> '(' [Explist] ')' ';' 
-             | "if" '(' Expr ')' Statement ["else" Statement]
-             | "while" '(' Expr ')' Statement
-             | "system.out.println" '(' [Expr|<STRING>]')' ';'
+             | IF '(' Expr ')' Statement [ELSE Statement]
+             | WHILE '(' Expr ')' Statement
+             | SYSTEM.OUT '(' [Expr|<STRING>]')' ';'
              | Return [Expr] ';' ;
 
 Expr :  Expr Binop Expr      
@@ -45,19 +45,19 @@ Expr :  Expr Binop Expr
         | Expr '.' "length"  '('  ')'
         | [ Expr '.']  <ID> '(' [ Exprlist ] ')'
         | [ Expr '.'] <ID>
-        | "new"  BasicType '[' Expr  ']'
-        | "new" <ID>  '('  ')'
+        | NEW  BasicType '[' Expr  ']'
+        | NEW <ID>  '('  ')'
         | '(' Expr ')'
-        | "this"
+        | THIS
         | Number ;
         
         
 Exprlist : Expr {',' Expr}
 
-Number   : <INT> 
-          | <REAL> 
-          | "true" 
-          | "false" ;
+Number   : INT
+          | REAL
+          | TRUE 
+          | FALSE ;
           
 Binop : '+'  {;}
         | '-' 
