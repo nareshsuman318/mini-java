@@ -3,7 +3,7 @@
 #include"y.tab.h"
 extern int yylval;
 %}
- alpha [A-Za-z]
+alpha [A-Za-z]
 digit [0-9]
 
 %%
@@ -27,6 +27,12 @@ if return IF;
 then    return THEN;
 else    return ELSE;
 while return WHILE ;
+"&&" {return AND;}  
+"||" {return OR;}  
+"<=" {return LE;}  
+">=" {return GE;}  
+"!=" {return NE;}  
+"==" {return EQ;}  
 Return return RETURN ;
 
 {digit}+    return NUM;
@@ -38,5 +44,4 @@ Return return RETURN ;
 \".*\" return SENTENCE ;
 . return yytext[0];
 %%
-
 
